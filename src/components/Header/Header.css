@@ -37,6 +37,7 @@
   align-items: center;
   cursor: pointer;
   outline: none;
+  margin-left: 10px;
 }
 
 .header__filters {

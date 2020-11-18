@@ -5,14 +5,6 @@ function PokemonList(){
   return(
     <div className='list'>
       <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
-      <PokemonCard/>
     </div>
   )
 }
