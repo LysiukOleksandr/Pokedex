@@ -1,9 +1,11 @@
 import React from 'react'
-
+import PokemonList from '../components/PokemonList/PokemonList'
 
 function Home(){
   return(
-    <div>Home</div>
+    <div>
+      <PokemonList/>
+    </div>
   )
 }
 

@@ -4,10 +4,10 @@ import './Header.css'
 function Header(){
   return(
     <div className='header'>
-      <div className="header__logo">
-        <a href='#'> POKEDEX </a>
+      <div className="header__logo" >
+         POKEDEX 
       </div>
-      <form action="" className="header__form">
+      <form  className="header__form">
         <input type="text" className="header__search"/>
         <button className="header__submit" type='submit'>
         <svg width='20' height='20' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
