@@ -12,7 +12,7 @@ function PokemonCard(){
         <p className="card__name">Bulbasaur</p>
         <ul className='card__types'>
           <li className="card__type" style={{backgroundColor: 'green'}}>grass</li>
-          <li className="card__type" style={{backgroundColor: 'blue'}}>poison</li>
+        <li className="card__type" style={{backgroundColor: 'blue'}}>poison</li>
         </ul>
     </div>
   )
