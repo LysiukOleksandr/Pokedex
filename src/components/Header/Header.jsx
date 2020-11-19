@@ -1,9 +1,7 @@
 import React from 'react'
 import './Header.css'
-import pokemons from '../../store/store'
-import { observer } from 'mobx-react-lite'
 
-const Header = observer(() =>{
+const Header = () =>{
   return(
     <div className='header'>
       <div className="header__logo" >
@@ -69,7 +67,7 @@ const Header = observer(() =>{
         </ul>
     </div>
   )
-})
+}
 
 
 export default Header
