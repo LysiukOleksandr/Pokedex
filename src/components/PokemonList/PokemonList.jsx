@@ -9,7 +9,7 @@ const PokemonList = observer(() =>{
       {
         store.pokemons.results && 
         store.pokemons.results.map((pokemon) =>{
-          return <PokemonCard pokemon={pokemon} key={pokemon.name} />
+          return <PokemonCard pokemonUrl={pokemon.url} key={pokemon.name} />
         })
       }
     </div>
