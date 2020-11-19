@@ -8,7 +8,7 @@ const Test = observer(()=>{
 
   React.useEffect(()=>{
     store.fetchPokemonsByFilter(['fire','rock'])
-    
+    console.log(store.filterPokemons)
   },[])
 
 

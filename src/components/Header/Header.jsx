@@ -1,14 +1,15 @@
 import React from 'react'
 import './Header.css'
 import store from '../../store/store'
-const Header = () =>{
+import { observer } from 'mobx-react-lite'
+const Header = observer(() =>{
 
   const filters = [10,20,50]
 
 
   return(
     <div className='header'>
-      <div className="header__logo" >
+      <div className="header__logo"  >
          POKEDEX 
       </div>
       <form  className="header__form">
@@ -68,7 +69,7 @@ const Header = () =>{
         </ul>
     </div>
   )
-}
+})
 
 
 export default Header

@@ -2,7 +2,7 @@ import React from 'react';
 import './PokemonCard.css'
 import axios from 'axios'
 import { observer } from 'mobx-react-lite'
-const PokemonCard = observer(({ pokemonUrl }) =>{
+const PokemonCard = observer(({ pokemonName }) =>{
 
  const [pokemon, setPokemon] = React.useState(null)
 
@@ -29,7 +29,7 @@ const PokemonCard = observer(({ pokemonUrl }) =>{
 
 
   React.useEffect(() =>{
-    axios.get(pokemonUrl)
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
     .then(({ data }) =>{
       setPokemon({
         id: data.id,
@@ -41,7 +41,7 @@ const PokemonCard = observer(({ pokemonUrl }) =>{
     .catch((error) => {
       console.log(error)
     })
-  },[pokemonUrl])
+  },[pokemonName])
 
 
  
