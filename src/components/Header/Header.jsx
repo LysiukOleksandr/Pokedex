@@ -1,7 +1,10 @@
 import React from 'react'
 import './Header.css'
-
+import store from '../../store/store'
 const Header = () =>{
+
+  const filters = [10,20,50]
+
   return(
     <div className='header'>
       <div className="header__logo" >
@@ -55,15 +58,15 @@ const Header = () =>{
         </form>
         
         <ul className="header__filters">
-          <li className="header__filters-item">
-              10
+          {
+            filters.map((filter) =>{
+          return <li className="header__filters-item" key={filter} onClick={()=> store.fetchPokemons(filter) }>
+              { filter }
           </li>
-          <li className="header__filters-item">
-              20
-          </li>
-          <li className="header__filters-item">
-              50
-          </li>
+            })
+          }
+          
+          
         </ul>
     </div>
   )

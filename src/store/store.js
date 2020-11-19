@@ -9,8 +9,8 @@ class Pokemons{
     makeAutoObservable(this)
   }
 
- fetchPokemons(){
-     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=10`)
+ fetchPokemons(limit){
+     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit !== '' ? limit : 10}`)
      .then(action('fetchSuccess', response =>{
        this.pokemons = response.data
      }),
