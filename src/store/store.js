@@ -4,7 +4,7 @@ configure({enforceAction: 'observed'});
 
 class Pokemons{
   pokemons = [];
-
+  filterPokemons = [];
   constructor(){
     makeAutoObservable(this)
   }
@@ -19,6 +19,24 @@ class Pokemons{
      })
      )
   }
+
+  fetchPokemonsByFilter(value){
+    let pokemons = new Set([])
+    value.forEach((item)=>{
+      axios.get(`https://pokeapi.co/api/v2/type/${item}`)
+      .then(action('filterSuccess', response =>{
+        response.data.pokemon.forEach((p)=>{
+          pokemons.add(p.pokemon.name)
+        })
+        this.filterPokemons = Array.from(pokemons)
+      }),
+      action('filterError', error =>{
+        console.log(error)
+      }))
+    })
+    
+  }
+
 }
 
 

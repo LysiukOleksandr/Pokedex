@@ -5,6 +5,7 @@ const Header = () =>{
 
   const filters = [10,20,50]
 
+
   return(
     <div className='header'>
       <div className="header__logo" >
@@ -56,7 +57,6 @@ const Header = () =>{
 </svg>
         </button>
         </form>
-        
         <ul className="header__filters">
           {
             filters.map((filter) =>{
@@ -65,8 +65,6 @@ const Header = () =>{
           </li>
             })
           }
-          
-          
         </ul>
     </div>
   )
