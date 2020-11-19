@@ -4,7 +4,7 @@ configure({enforceAction: 'observed'});
 
 class Pokemons{
   pokemons = [];
-  filterPokemons = [];
+  pokemonsTypes = [];
   constructor(){
     makeAutoObservable(this)
   }
@@ -37,8 +37,22 @@ class Pokemons{
         console.log(error)
       }))
     })
-    
   }
+
+  fetchPokemonsTypes(){
+    axios.get(`https://pokeapi.co/api/v2/type/`)
+    .then(action('typesSuccess', response =>{
+      const types = response.data.results.map((type) =>{
+        return type.name
+      })
+      this.pokemonsTypes = types
+    }),
+    action('typesError', error =>{
+      console.log(error)
+    })
+    )
+  }
+
 
 }
 
