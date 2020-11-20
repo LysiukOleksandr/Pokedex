@@ -23,7 +23,7 @@ const Filter = observer(() =>{
     }
     store.setCheckedTypes(newArr)
     // store.fetchPokemonsByFilter(newArr)
-    store.testFetchPokemons()
+    store.fetchPokemons()
   }
 
   React.useEffect(()=>{

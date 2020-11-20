@@ -11,36 +11,12 @@ class Pokemons{
   }
 
   
-  testFetchPokemons(limit=10,types){
+  fetchPokemons(limit=10){
     if(this.checkedTypes.length === 0){
-      
-      axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit !== '' ? limit : 10}`)
-      .then(action('fetchSuccess', response =>{
-     const data = response.data.results.map((item)=>{
-       return item.name
-     })
-     this.pokemons = data;
-      }),
-      action('fetchError', error =>{
-        console.log(error)
-      })
-      )
+      this.fetchPokemonsBasic(limit)
     }
     if(this.checkedTypes.length >=1){
-      let pokemons = new Set()
-      this.checkedTypes.forEach((item)=>{
-        axios.get(`https://pokeapi.co/api/v2/type/${item}`)
-        .then(action('filterSuccess', response =>{
-          response.data.pokemon.forEach((p)=>{
-            pokemons.add(p.pokemon.name)
-          })
-          this.pokemons = Array.from(pokemons).slice(0,limit)
-          console.log(this.pokemons)
-        }),
-        action('filterError', error =>{
-          console.log(error)
-        }))
-      })
+      this.fetchPokemonsByFilter(limit)
     }
   }
 
@@ -48,35 +24,35 @@ class Pokemons{
 
 
 
-//  fetchPokemons(limit){
-//      axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit !== '' ? limit : 10}`)
-//      .then(action('fetchSuccess', response =>{
-//     const data = response.data.results.map((item)=>{
-//       return item.name
-//     })
-//     this.pokemons = data;
-//      }),
-//      action('fetchError', error =>{
-//        console.log(error)
-//      })
-//      )
-//   }
+ fetchPokemonsBasic(limit){
+     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit !== '' ? limit : 10}`)
+     .then(action('fetchSuccess', response =>{
+    const data = response.data.results.map((item)=>{
+      return item.name
+    })
+    this.pokemons = data;
+     }),
+     action('fetchError', error =>{
+       console.log(error)
+     })
+     )
+  }
 
-//   fetchPokemonsByFilter(value){
-//     let pokemons = new Set()
-//     value.forEach((item)=>{
-//       axios.get(`https://pokeapi.co/api/v2/type/${item}`)
-//       .then(action('filterSuccess', response =>{
-//         response.data.pokemon.forEach((p)=>{
-//           pokemons.add(p.pokemon.name)
-//         })
-//         this.pokemons = Array.from(pokemons)
-//       }),
-//       action('filterError', error =>{
-//         console.log(error)
-//       }))
-//     })
-//   }
+  fetchPokemonsByFilter(limit){
+    let pokemons = new Set()
+    this.checkedTypes.forEach((item)=>{
+      axios.get(`https://pokeapi.co/api/v2/type/${item}`)
+      .then(action('filterSuccess', response =>{
+        response.data.pokemon.forEach((p)=>{
+          pokemons.add(p.pokemon.name)
+        })
+        this.pokemons = Array.from(pokemons).slice(0,limit)
+      }),
+      action('filterError', error =>{
+        console.log(error)
+      }))
+    })
+  }
 
   fetchPokemonsTypes(){
     axios.get(`https://pokeapi.co/api/v2/type/`)

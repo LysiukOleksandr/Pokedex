@@ -15,6 +15,7 @@ const PokemonCard = observer(({ pokemonName }) =>{
   fighting: '823551D',
   fire: 'E73B0C',
   flying: 'A3B3F7',
+  fighting: '931625',
   ghost: '6060B2',
   grass: '74C236',
   ground: 'D3B357',

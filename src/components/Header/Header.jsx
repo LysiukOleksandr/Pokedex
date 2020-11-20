@@ -61,7 +61,7 @@ const Header = observer(() =>{
         <ul className="header__filters">
           {
             filters.map((filter) =>{
-          return <li className="header__filters-item" key={filter} onClick={()=> store.testFetchPokemons(filter) }>
+          return <li className="header__filters-item" key={filter} onClick={()=> store.fetchPokemons(filter) }>
               { filter }
           </li>
             })
