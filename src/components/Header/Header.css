@@ -13,32 +13,7 @@
   font-weight: 700;
 }
 
-.header__form {
-  display: flex;
-}
 
-.header__search {
-  width: 250px;
-  height: 30px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border: none;
-  background: #fff;
-  outline: none;
-}
-
-.header__submit {
-  border: none;
-  background: inherit;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  outline: none;
-  margin-left: 10px;
-}
 
 .header__filters {
   display: flex;

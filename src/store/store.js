@@ -69,9 +69,13 @@ class Pokemons{
   }
 
 
+  searchPokemons(limit, searchValue){
+    
+  }
+
+
   setCheckedTypes(value){
     this.checkedTypes = value
-    console.log(this.checkedTypes)
   }
 
 }
