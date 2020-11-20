@@ -1,6 +1,7 @@
 import React from 'react'
 import PokemonList from '../components/PokemonList/PokemonList'
 import Filter from '../components/Filter/Filter'
+import Pagination from '../components/Pagination/Pagination'
 import store from '../store/store'
 import {observer} from 'mobx-react-lite'
 const Home = observer(() =>{
@@ -13,6 +14,7 @@ const Home = observer(() =>{
     <div>
       <Filter />
       <PokemonList/>
+      <Pagination />
     </div>
   )
 })

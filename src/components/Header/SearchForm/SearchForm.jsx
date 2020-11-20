@@ -2,7 +2,6 @@ import React from 'react';
 import './SearchForm.css'
 import { observer } from 'mobx-react-lite'
 import store from '../../../store/store'
-
 const SearchForm = observer(() =>{
 
   const [searchValue, setSearchValue] = React.useState('')
@@ -12,8 +11,9 @@ const SearchForm = observer(() =>{
     setSearchValue(e.target.value);
   }
 
-  function onSubmit(){
-    store.searchPokemons(searchValue)    
+  function onSubmit(e){
+    e.preventDefault()
+    store.searchPokemons('',searchValue);
   }
 
   return(
