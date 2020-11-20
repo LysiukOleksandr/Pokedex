@@ -6,17 +6,20 @@ class Pokemons{
   pokemons = [];
   pokemonsTypes = [];
   checkedTypes = [];
+  currentPage = 1;
+  limitOnPage = 10;
+  countOfPokemons = 0;
   constructor(){
     makeAutoObservable(this)
   }
 
   
-  fetchPokemons(limit=10){
+  fetchPokemons(){
     if(this.checkedTypes.length === 0){
-      this.fetchPokemonsBasic(limit)
+      this.fetchPokemonsBasic(this.limitOnPage)
     }
     if(this.checkedTypes.length >=1){
-      this.fetchPokemonsByFilter(limit)
+      this.fetchPokemonsByFilter(this.limitOnPage)
     }
   }
 
@@ -24,12 +27,13 @@ class Pokemons{
 
 
 
- fetchPokemonsBasic(limit){
-     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${limit !== '' ? limit : 10}`)
+ fetchPokemonsBasic(){
+     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${this.currentPage === 1 ? 0 : (this.currentPage * this.limitOnPage) - this.countOfPokemons}&limit=${this.limitOnPage}`)
      .then(action('fetchSuccess', response =>{
     const data = response.data.results.map((item)=>{
       return item.name
     })
+    this.countOfPokemons = response.data.count ;
     this.pokemons = data;
      }),
      action('fetchError', error =>{
@@ -38,7 +42,7 @@ class Pokemons{
      )
   }
 
-  fetchPokemonsByFilter(limit){
+  fetchPokemonsByFilter(){
     let pokemons = new Set()
     this.checkedTypes.forEach((item)=>{
       axios.get(`https://pokeapi.co/api/v2/type/${item}`)
@@ -46,7 +50,7 @@ class Pokemons{
         response.data.pokemon.forEach((p)=>{
           pokemons.add(p.pokemon.name)
         })
-        this.pokemons = Array.from(pokemons).slice(0,limit)
+        this.pokemons = Array.from(pokemons).slice(0,this.limitOnPage)
       }),
       action('filterError', error =>{
         console.log(error)
@@ -69,11 +73,12 @@ class Pokemons{
   }
 
 
-  searchPokemons(limit, searchValue){
+  searchPokemons( searchValue){
 
-    
+  }
 
-
+  setLimitPageFilter(value){
+    this.limitOnPage = value;
   }
 
 
@@ -81,6 +86,21 @@ class Pokemons{
     this.checkedTypes = value
   }
 
+  changePage(page){
+    this.currentPage = page;
+      this.fetchPokemons()
+    
+  }
+
+  nextPage(){
+    this.currentPage++;
+    this.fetchPokemons()
+  }
+
+  prevPage(){
+    this.currentPage--;
+    this.fetchPokemons()
+  }
 }
 
 

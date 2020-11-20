@@ -2,14 +2,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 400px;
+  width: 400px;
   margin: 30px auto;
   padding: 0 5px;
+  position: relative;
+  overflow: hidden;
 }
 
 .pagination__btn {
   padding: 5px;
-  background: cadetblue;
+  background: #5f9ea0;
+  border: none;
+  cursor: pointer;
 }
 
 .pagination__list {
@@ -20,8 +24,7 @@
 
 .pagination__item {
   list-style-type: none;
-  margin: 0 10px;
-  padding: 5px 10px;
+  padding: 5px 5px;
   cursor: pointer;
   transition: 0.3s all ease;
   -webkit-transition: 0.3s all ease;
