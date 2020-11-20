@@ -1,9 +1,26 @@
 import React from 'react';
 import './Filter.css'
+import FilterItem from './FilterItem/FilterItem'
 import {observer} from 'mobx-react-lite'
 import store from '../../store/store'
 
 const Filter = observer(() =>{
+
+  const [types,setTypes] = React.useState(new Set())
+
+
+  function handleChange(e){
+    const item = e.target.value
+    const isChecked = e.target.checked;
+    
+    if(isChecked){
+      setTypes(types.add(item))
+    }
+    else if(!isChecked){
+      setTypes(types.delete(item))
+    }
+    console.log(types)
+  }
 
   React.useEffect(()=>{
     store.fetchPokemonsTypes()
@@ -15,14 +32,9 @@ const Filter = observer(() =>{
         {
           store.pokemonsTypes &&
           store.pokemonsTypes.map((item)=>{
-            return <div className="filter__item" key={item}>
-            <label className='filter__label' htmlFor={item}>{ item }</label>
-            <input className='filter__input' id={item} type='checkbox' name='pokeType' value={item} />
-            </div>
+            return <FilterItem item={item} onChange={handleChange} key={item} />
           })
         }
-      
-        
       </form>
     </div>
   )
