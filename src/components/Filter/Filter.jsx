@@ -5,21 +5,23 @@ import {observer} from 'mobx-react-lite'
 import store from '../../store/store'
 
 const Filter = observer(() =>{
-
-  const [types,setTypes] = React.useState(new Set())
+  const [types, setTypes] = React.useState([])
+  window.types = types;
 
 
   function handleChange(e){
     const item = e.target.value
     const isChecked = e.target.checked;
     
+   
     if(isChecked){
-      setTypes(types.add(item))
+      setTypes([...types, item])
     }
-    else if(!isChecked){
-      setTypes(types.delete(item))
+    if(!isChecked){
+      const newArr = types.filter((el)=> el !== item);
+      setTypes([...newArr])
     }
-    console.log(types)
+    
   }
 
   React.useEffect(()=>{
