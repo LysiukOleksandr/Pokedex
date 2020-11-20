@@ -12,16 +12,18 @@ const Filter = observer(() =>{
   function handleChange(e){
     const item = e.target.value
     const isChecked = e.target.checked;
-    
+    let newArr = []
    
     if(isChecked){
-      setTypes([...types, item])
+      newArr = [...types, item]
+      setTypes(newArr)
     }
     if(!isChecked){
-      const newArr = types.filter((el)=> el !== item);
-      setTypes([...newArr])
+      newArr = types.filter((el)=> el !== item);
+     setTypes(newArr)
     }
-    
+    console.log(newArr)
+    store.fetchPokemonsByFilter(newArr)
   }
 
   React.useEffect(()=>{
