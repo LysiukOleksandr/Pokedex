@@ -6,14 +6,13 @@ import store from '../../store/store'
 
 const Filter = observer(() =>{
   const [types, setTypes] = React.useState([])
-  window.types = types;
 
 
   function handleChange(e){
     const item = e.target.value
     const isChecked = e.target.checked;
-    let newArr = []
-   
+    let newArr = [];
+
     if(isChecked){
       newArr = [...types, item]
       setTypes(newArr)
@@ -22,8 +21,9 @@ const Filter = observer(() =>{
       newArr = types.filter((el)=> el !== item);
      setTypes(newArr)
     }
-    console.log(newArr)
-    store.fetchPokemonsByFilter(newArr)
+    store.setCheckedTypes(newArr)
+    // store.fetchPokemonsByFilter(newArr)
+    store.testFetchPokemons()
   }
 
   React.useEffect(()=>{

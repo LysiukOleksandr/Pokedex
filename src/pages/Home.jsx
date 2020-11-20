@@ -6,7 +6,7 @@ import {observer} from 'mobx-react-lite'
 const Home = observer(() =>{
 
   React.useEffect(()=>{
-    store.fetchPokemons()
+    store.testFetchPokemons()
   },[])
 
   return(
