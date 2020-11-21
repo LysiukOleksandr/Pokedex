@@ -59,9 +59,8 @@ const PokemonCard = observer(({ pokemonName }) =>{
             pokemon.types.map((item) =>{
               return <li key={item.type.name} className="card__type" style={{ backgroundColor: `#${colors[item.type.name]}` }}>{item.type.name }</li>
             })
-          }
-        </ul>
-          
+          } 
+         </ul> 
     </div>
   )
 })

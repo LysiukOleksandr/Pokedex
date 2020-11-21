@@ -3,6 +3,7 @@ import {makeAutoObservable, configure, action} from 'mobx'
 configure({enforceAction: 'observed'});
 
 class Pokemons{
+
   pokemons = [];
   pokemonsTypes = [];
   checkedTypes = [];
@@ -19,9 +20,10 @@ class Pokemons{
 
   
   fetchPokemons(){
-    if(this.searchValue !== ''){
-      this.searchPokemons()
-    }
+    console.log('searchVALUE:' + ' ' + this.searchValue)
+      if(this.searchValue !== '' || this.searchPokemons.length > 0){
+        this.searchPokemons()
+      }
     if(this.checkedTypes.length === 0){
       this.fetchPokemonsBasic()
     }
@@ -85,7 +87,8 @@ class Pokemons{
   searchPokemons(){
     let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
     let endLocalOffset = (this.limitOnPage * this.currentPage);
-    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${this.fixedCountOfPokemons}&offset=0`)
+    console.log(`SEARCH IS WORKING: ${startLocalOffset} : ${endLocalOffset}`)
+    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${this.fixedCountOfPokemons}offset=0`)
     .then(action('searchSuccess',(res)=>{
     let data = res.data.results.map((item)=>{
       return item.name

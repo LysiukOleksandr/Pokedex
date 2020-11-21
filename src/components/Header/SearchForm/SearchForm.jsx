@@ -4,22 +4,26 @@ import { observer } from 'mobx-react-lite'
 import store from '../../../store/store'
 const SearchForm = observer(() =>{
 
-  const [searchValue, setSearchValue] = React.useState('')
+  // const [searchValue, setSearchValue] = React.useState('')
 
 
    function onChangeSearchValue(e){
-    setSearchValue(e.target.value);
+    // setSearchValue(e.target.value);
+    store.setSearchValue(e.target.value)
+    console.log('onchange search form')
   }
 
   function onSubmit(e){
     e.preventDefault()
-    store.setSearchValue(searchValue)
-    store.fetchPokemons(searchValue)
+    store.fetchPokemons()
+    console.log('onsubmit search form')
   }
 
+
+
   return(
-    <form  className="header__form" onSubmit={onSubmit}>
-        <input type="text" className="header__search" onChange={onChangeSearchValue}/>
+      <form  className="header__form" onSubmit={onSubmit}>
+       <input type="text" className="header__search" onChange={onChangeSearchValue} />
         <button className="header__submit" type='submit'>
         <svg width='20' height='20' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 512.005 512.005" styles="enableBackground:new 0 0 512.005 512.005;" xmlSpace="preserve">
@@ -34,7 +38,7 @@ const SearchForm = observer(() =>{
 <g>
 </g>
 <g>
-</g>x
+</g>
 <g>
 </g>
 <g>

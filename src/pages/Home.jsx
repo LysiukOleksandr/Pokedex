@@ -6,12 +6,12 @@ import store from '../store/store'
 import {observer} from 'mobx-react-lite'
 const Home = observer(() =>{
   
-
   React.useEffect(()=>{
-    if(store.pokemons.length < 1 ){
+    if(store.pokemons.length < 1 || store.searchValue !== '' ){
       store.fetchPokemons()
     }
-  },[])
+  })
+  
 
   return(
     <div>
