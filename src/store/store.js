@@ -25,15 +25,14 @@ class Pokemons{
 
 
 
-
-
  fetchPokemonsBasic(){
-     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${this.currentPage === 1 ? 0 : (this.currentPage * this.limitOnPage) - this.countOfPokemons}&limit=${this.limitOnPage}`)
+
+     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${this.pokemons.length === 0 ? 0 : (this.limitOnPage * this.currentPage) - this.limitOnPage}&limit=${this.limitOnPage}`)
      .then(action('fetchSuccess', response =>{
     const data = response.data.results.map((item)=>{
       return item.name
     })
-    this.countOfPokemons = response.data.count ;
+    this.countOfPokemons = response.data.count;
     this.pokemons = data;
      }),
      action('fetchError', error =>{
@@ -88,7 +87,7 @@ class Pokemons{
 
   changePage(page){
     this.currentPage = page;
-      this.fetchPokemons()
+    this.fetchPokemons()
     
   }
 
@@ -100,6 +99,7 @@ class Pokemons{
   prevPage(){
     this.currentPage--;
     this.fetchPokemons()
+
   }
 }
 

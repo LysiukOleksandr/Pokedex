@@ -7,8 +7,7 @@ const Pagination = observer(() =>{
 
   const portionSize = store.limitOnPage;
   let pageLinks = [];
-
-  for(let i = 1; i <= store.countOfPokemons; i++){
+  for(let i = 1; i <= (store.countOfPokemons / store.limitOnPage); i++){
     pageLinks.push(i)
   }
 
@@ -52,7 +51,7 @@ const Pagination = observer(() =>{
               <li
                 key={p}
                 onClick={(e) => onPageChanged(p)}
-                className="pagination__item pagination__btn-next"
+                className="pagination__item "
               >
                 {p}
               </li>
@@ -61,7 +60,7 @@ const Pagination = observer(() =>{
       </ul>
       {portionCount > portionNumber && (
           <button
-            className="pagination__btn"
+            className="pagination__btn pagination__btn-next"
             onClick={nextPage}
           >
             next
