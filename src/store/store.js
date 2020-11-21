@@ -6,6 +6,7 @@ class Pokemons{
   pokemons = [];
   pokemonsTypes = [];
   checkedTypes = [];
+  filteredPokemons = [];
   currentPage = 1;
   limitOnPage = 10;
   countOfPokemons = 0;
@@ -16,10 +17,10 @@ class Pokemons{
   
   fetchPokemons(){
     if(this.checkedTypes.length === 0){
-      this.fetchPokemonsBasic(this.limitOnPage)
+      this.fetchPokemonsBasic()
     }
     if(this.checkedTypes.length >=1){
-      this.fetchPokemonsByFilter(this.limitOnPage)
+      this.fetchPokemonsByFilter()
     }
   }
 
@@ -41,15 +42,19 @@ class Pokemons{
      )
   }
 
-  fetchPokemonsByFilter(){
+   fetchPokemonsByFilter(){
+    let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
+    let endLocalOffset = (this.limitOnPage * this.currentPage);
     let pokemons = new Set()
-    this.checkedTypes.forEach((item)=>{
-      axios.get(`https://pokeapi.co/api/v2/type/${item}`)
+    this.checkedTypes.forEach ((item)=>{
+    axios.get(`https://pokeapi.co/api/v2/type/${item}`)
       .then(action('filterSuccess', response =>{
         response.data.pokemon.forEach((p)=>{
           pokemons.add(p.pokemon.name)
         })
-        this.pokemons = Array.from(pokemons).slice(0,this.limitOnPage)
+        this.filteredPokemons = Array.from(pokemons);
+        this.pokemons = this.filteredPokemons.slice(startLocalOffset, endLocalOffset)
+        this.countOfPokemons = this.filteredPokemons.length;
       }),
       action('filterError', error =>{
         console.log(error)

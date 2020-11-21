@@ -7,7 +7,7 @@ const Pagination = observer(() =>{
 
   const portionSize = store.limitOnPage;
   let pageLinks = [];
-  for(let i = 1; i <= (store.countOfPokemons / store.limitOnPage); i++){
+  for(let i = 1; i <= (Math.ceil(store.countOfPokemons / store.limitOnPage)); i++){
     pageLinks.push(i)
   }
 
