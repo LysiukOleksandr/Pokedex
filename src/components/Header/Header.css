@@ -2,9 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  flex-wrap: wrap;
+  min-height: 70px;
   background: rgb(17, 114, 241);
-  padding: 0 10px;
+  padding: 0 5px 20px 0;
 }
 
 .header__logo {
@@ -13,10 +14,9 @@
   font-weight: 700;
 }
 
-
-
 .header__filters {
   display: flex;
+  margin-top: 5px;
 }
 
 .header__filters-item {

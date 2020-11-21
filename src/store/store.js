@@ -14,6 +14,7 @@ class Pokemons{
   countOfPokemons = 0;
   fixedCountOfPokemons = 1050;
   searchValue = '';
+  
   constructor(){
     makeAutoObservable(this)
   }
