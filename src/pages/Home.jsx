@@ -5,9 +5,12 @@ import Pagination from '../components/Pagination/Pagination'
 import store from '../store/store'
 import {observer} from 'mobx-react-lite'
 const Home = observer(() =>{
+  
 
   React.useEffect(()=>{
-    store.fetchPokemons()
+    if(store.pokemons.length < 1 ){
+      store.fetchPokemons()
+    }
   },[])
 
   return(

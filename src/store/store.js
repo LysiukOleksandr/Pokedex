@@ -7,27 +7,32 @@ class Pokemons{
   pokemonsTypes = [];
   checkedTypes = [];
   filteredPokemons = [];
+  searchedPokemons = [];
   currentPage = 1;
   limitOnPage = 10;
   countOfPokemons = 0;
+  fixedCountOfPokemons = 1050;
+  searchValue = '';
   constructor(){
     makeAutoObservable(this)
   }
 
   
   fetchPokemons(){
+    if(this.searchValue !== ''){
+      this.searchPokemons()
+    }
     if(this.checkedTypes.length === 0){
       this.fetchPokemonsBasic()
     }
-    if(this.checkedTypes.length >=1){
+     if(this.checkedTypes.length >=1){
       this.fetchPokemonsByFilter()
     }
   }
 
-
+  
 
  fetchPokemonsBasic(){
-
      axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${this.pokemons.length === 0 ? 0 : (this.limitOnPage * this.currentPage) - this.limitOnPage}&limit=${this.limitOnPage}`)
      .then(action('fetchSuccess', response =>{
     const data = response.data.results.map((item)=>{
@@ -77,8 +82,28 @@ class Pokemons{
   }
 
 
-  searchPokemons( searchValue){
+  searchPokemons(){
+    let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
+    let endLocalOffset = (this.limitOnPage * this.currentPage);
+    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${this.fixedCountOfPokemons}&offset=0`)
+    .then(action('searchSuccess',(res)=>{
+    let data = res.data.results.map((item)=>{
+      return item.name
+    })
+    data = data.filter((item)=> item.startsWith(this.searchValue))
+    this.pokemons = data.slice(startLocalOffset, endLocalOffset)
+    this.countOfPokemons = data.length
 
+
+    }),
+    action('searchError', error =>{
+      console.log(error)
+    })
+    )
+  }
+
+  setSearchValue(value){
+    this.searchValue = value
   }
 
   setLimitPageFilter(value){
@@ -104,8 +129,8 @@ class Pokemons{
   prevPage(){
     this.currentPage--;
     this.fetchPokemons()
-
   }
+  
 }
 
 

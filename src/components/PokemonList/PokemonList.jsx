@@ -4,6 +4,8 @@ import PokemonCard from '../PokemonCard/PokemonCard'
 import { observer } from 'mobx-react-lite'
 import store from '../../store/store'
 const PokemonList = observer(() =>{
+
+  
   return(
     <div className='list'>
       {

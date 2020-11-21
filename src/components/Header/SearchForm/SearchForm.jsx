@@ -13,7 +13,8 @@ const SearchForm = observer(() =>{
 
   function onSubmit(e){
     e.preventDefault()
-    store.searchPokemons('',searchValue);
+    store.setSearchValue(searchValue)
+    store.fetchPokemons(searchValue)
   }
 
   return(
