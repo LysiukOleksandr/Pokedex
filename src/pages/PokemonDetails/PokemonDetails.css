@@ -1,0 +1,15 @@
+.pokemon-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding-top: 20px;
+}
+.pokemon-details__image {
+  width: 280px;
+  height: 280px;
+}
+.pokemon-details__id {
+  font-weight: 700;
+}
