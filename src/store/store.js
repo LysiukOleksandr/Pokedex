@@ -1,4 +1,4 @@
-import {makeAutoObservable, configure, action} from 'mobx'
+import {makeAutoObservable, configure, action, runInAction} from 'mobx'
  import axios from 'axios'
 configure({enforceAction: 'observed'});
 
@@ -84,25 +84,35 @@ class Pokemons{
   }
 
 
-  searchPokemons(){
+  async searchPokemons(){
+    
     let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
     let endLocalOffset = (this.limitOnPage * this.currentPage);
-    console.log(`SEARCH IS WORKING: ${startLocalOffset} : ${endLocalOffset}`)
-    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${this.fixedCountOfPokemons}offset=0`)
-    .then(action('searchSuccess',(res)=>{
-    let data = res.data.results.map((item)=>{
-      return item.name
-    })
-    data = data.filter((item)=> item.startsWith(this.searchValue))
-    this.pokemons = data.slice(startLocalOffset, endLocalOffset)
-    this.countOfPokemons = data.length
+    if(this.searchedPokemons.length === 0 || this.searchValue[0] !== this.pokemons[0][0]){
+    this.currentPage = 1;
+    
+    try{
+      let res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${this.fixedCountOfPokemons}`)
+    this.searchedPokemons= res.data.results.map((item)=>{
+       return item.name
+      })
+      runInAction(()=>{
+        this.pokemons = this.searchedPokemons.filter((item)=> item.startsWith(this.searchValue)).slice(startLocalOffset, endLocalOffset)
 
+      })
+    }
+    catch{
+      console.log('something went wrong')
+    }
+      
+  }
+    else if(this.searchedPokemons.length !== 0 ){
+      runInAction(()=>{
+        this.pokemons = this.searchedPokemons.filter((item)=> item.startsWith(this.searchValue)).slice(startLocalOffset, endLocalOffset)
 
-    }),
-    action('searchError', error =>{
-      console.log(error)
-    })
-    )
+      })
+      console.log(this.pokemons)
+    }
   }
 
   setSearchValue(value){
@@ -134,23 +144,6 @@ class Pokemons{
     this.fetchPokemons()
   }
   
-  // getPokemonDetails(name){
-  //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-  //   .then(action('successDetails', ({data}) =>{
-  //     this.pokemonDetails = {
-  //       id: data.id,
-  //       name: data.name,
-  //       height: data.height,
-  //       weight: data.weight,
-  //       types: data.types,
-  //       sprite: data.sprites.front_default
-  //     }
-  //     console.log(this.pokemonDetails)
-  //   }),
-  //   action('errorDetails', error =>{
-  //     console.log(error)
-  //   }))
-  // }
 
 
 }
