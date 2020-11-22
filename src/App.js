@@ -11,9 +11,8 @@ function App() {
         <Header/>
       </header>
       <main>
-        {/* <Route exact path='/' component={Home} />
-        <Route path='/:name' component={PokemonDetails} /> */}
-        <PokemonDetails/>
+        <Route exact path='/' component={Home} />
+        <Route path='/:name' component={PokemonDetails} />
       </main>
     </div>
     </BrowserRouter>

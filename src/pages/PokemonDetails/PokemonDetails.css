@@ -13,3 +13,8 @@
 .pokemon-details__id {
   font-weight: 700;
 }
+
+.pokemon-details__type {
+  list-style-type: none;
+  width: 280px;
+}

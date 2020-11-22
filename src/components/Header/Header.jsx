@@ -3,7 +3,7 @@ import './Header.css'
 import SearchForm from './SearchForm/SearchForm'
 import store from '../../store/store'
 import { observer } from 'mobx-react-lite'
-
+import { Link } from 'react-router-dom'
 const Header = observer(() =>{
 
   const filters = [10,20,50]
@@ -15,9 +15,9 @@ const Header = observer(() =>{
 
   return(
     <div className='header'>
-      <div className="header__logo"  >
+      <Link className="header__logo" to='/' >
          POKEDEX 
-      </div>
+      </Link>
      <SearchForm/>
         <ul className="header__filters">
           {

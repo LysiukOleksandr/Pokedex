@@ -21,7 +21,6 @@ class Pokemons{
 
   
   fetchPokemons(){
-    console.log('searchVALUE:' + ' ' + this.searchValue)
       if(this.searchValue !== '' || this.searchPokemons.length > 0){
         this.searchPokemons()
       }
@@ -135,6 +134,25 @@ class Pokemons{
     this.fetchPokemons()
   }
   
+  // getPokemonDetails(name){
+  //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  //   .then(action('successDetails', ({data}) =>{
+  //     this.pokemonDetails = {
+  //       id: data.id,
+  //       name: data.name,
+  //       height: data.height,
+  //       weight: data.weight,
+  //       types: data.types,
+  //       sprite: data.sprites.front_default
+  //     }
+  //     console.log(this.pokemonDetails)
+  //   }),
+  //   action('errorDetails', error =>{
+  //     console.log(error)
+  //   }))
+  // }
+
+
 }
 
 

@@ -2,6 +2,8 @@ import React from 'react';
 import './PokemonCard.css'
 import axios from 'axios'
 import { observer } from 'mobx-react-lite'
+import { Link } from 'react-router-dom'
+
 const PokemonCard = observer(({ pokemonName }) =>{
 
  const [pokemon, setPokemon] = React.useState(null)
@@ -48,9 +50,11 @@ const PokemonCard = observer(({ pokemonName }) =>{
 
   return(
     <div className='card'>
+      <Link to={`/${pokemonName}`}>
       <div className="card__img">
         <img src={pokemon && pokemon.sprite } alt={pokemon && pokemon.name }/>
         </div>
+        </Link>
         <p className='card__id'>{pokemon && pokemon.id }</p>
         <p className="card__name"> {pokemon && pokemon.name } </p>
         <ul className='card__types'>
