@@ -4,19 +4,22 @@ import Filter from '../components/Filter/Filter'
 import Pagination from '../components/Pagination/Pagination'
 import store from '../store/store'
 import {observer} from 'mobx-react-lite'
+
 const Home = observer(() =>{
-  
+  const pokemons = store.pokemons
   React.useEffect(()=>{
-    if(store.pokemons.length < 1 || store.searchValue !== '' ){
+    if(store.pokemons.length < 1){
       store.fetchPokemons()
     }
-  })
+
+    return () => console.log('unmount')
+  },[])
   
 
   return(
     <div>
       <Filter />
-      <PokemonList/>
+      <PokemonList pokemons={pokemons}/>
       <Pagination />
     </div>
   )

@@ -88,6 +88,8 @@ class Pokemons{
     
     let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
     let endLocalOffset = (this.limitOnPage * this.currentPage);
+    
+
     if(this.searchedPokemons.length === 0 || this.searchValue[0] !== this.pokemons[0][0]){
     this.currentPage = 1;
     

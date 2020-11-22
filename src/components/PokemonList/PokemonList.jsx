@@ -2,15 +2,14 @@ import React from 'react';
 import './PokemonList.css'
 import PokemonCard from '../PokemonCard/PokemonCard'
 import { observer } from 'mobx-react-lite'
-import store from '../../store/store'
-const PokemonList = observer(() =>{
+const PokemonList = observer(({ pokemons }) =>{
 
   
   return(
     <div className='list'>
       {
-        store.pokemons && 
-        store.pokemons.map((pokemon) =>{
+        pokemons && 
+        pokemons.map((pokemon) =>{
           return <PokemonCard pokemonName={pokemon} key={pokemon} />
         })
       }
