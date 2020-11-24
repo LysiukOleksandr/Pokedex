@@ -8,12 +8,8 @@ const Filter = observer(() =>{
   const [type, setType] = React.useState('')
 
   React.useEffect(()=>{
-    let mounted = true;
-    if(mounted){
     store.changeCurrentPage(1)
     store.filterPokemons(type)
-    }
-    return () => mounted = false
   }, [type])
 
   return(

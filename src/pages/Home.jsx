@@ -7,12 +7,9 @@ import {observer} from 'mobx-react-lite'
 const Home = observer(() =>{
 
     React.useEffect(()=>{
-      let mounted = true;
-      if(mounted){
       store.fetchPokemons()
       store.fetchPokemonsTypes()
-      }
-      return () => mounted = false
+      
     }, [])
 
 
