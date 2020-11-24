@@ -4,22 +4,22 @@ import Filter from '../components/Filter/Filter'
 import Pagination from '../components/Pagination/Pagination'
 import store from '../store/store'
 import {observer} from 'mobx-react-lite'
-
 const Home = observer(() =>{
-  const pokemons = store.pokemons
-  React.useEffect(()=>{
-    if(store.pokemons.length < 1){
-      store.fetchPokemons()
-    }
 
-    return () => console.log('unmount')
-  },[])
-  
+    React.useEffect(()=>{
+      let mounted = true;
+      if(mounted){
+      store.fetchPokemons()
+      store.fetchPokemonsTypes()
+      }
+      return () => mounted = false
+    }, [])
+
 
   return(
     <div>
       <Filter />
-      <PokemonList pokemons={pokemons}/>
+      <PokemonList pokemons={store.pokemons}/>
       <Pagination />
     </div>
   )

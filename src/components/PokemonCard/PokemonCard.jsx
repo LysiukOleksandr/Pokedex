@@ -1,12 +1,15 @@
 import React from 'react';
 import './PokemonCard.css'
-import axios from 'axios'
 import { observer } from 'mobx-react-lite'
+import {Img} from 'react-image'
 import { Link } from 'react-router-dom'
-
-const PokemonCard = observer(({ pokemonName }) =>{
+import axios from 'axios'
+const PokemonCard = observer(({ id }) =>{
 
  const [pokemon, setPokemon] = React.useState(null)
+
+  
+
 
  const colors = {
   bug: 'B1C12E',
@@ -31,29 +34,32 @@ const PokemonCard = observer(({ pokemonName }) =>{
 
 
   React.useEffect(() =>{
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`,{cancelToken: source.token})
     .then(({ data }) =>{
       setPokemon({
         id: data.id,
         name: data.name,
-        sprite: data.sprites.front_default,
         types: data.types
       })
     })
     .catch((error) => {
       console.log(error)
     })
-  },[pokemonName])
+    
+    return () => source.cancel();
+  },[id])
 
 
- 
 
   return(
-    <div className='card'>
-      <Link to={`/${pokemonName}`}>
-      <div className="card__img">
-        <img src={pokemon && pokemon.sprite } alt={pokemon && pokemon.name }/>
-        </div>
+    <div className='card' >
+      <Link to={`/${id}`}>
+        <Img className='card__img' key={id} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt={`poke-${id}`}
+         loader = {<img src = 'https://gifimage.net/wp-content/uploads/2018/05/spinner-gif-transparent-background-2.gif'style = {{width: 100, height: 100}} alt = '' />}
+         unloader = {<img src = 'https://www.nocowboys.co.nz/images/v3/no-image-available.png' style = {{width: 100, height: 100}} alt = ''/>}
+        />
         </Link>
         <p className='card__id'>{pokemon && pokemon.id }</p>
         <p className="card__name"> {pokemon && pokemon.name } </p>

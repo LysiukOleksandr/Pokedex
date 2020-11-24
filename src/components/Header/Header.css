@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   min-height: 70px;
   background: rgb(17, 114, 241);
-  padding: 0 5px 20px 0;
+  padding: 0 5px 20px 5px;
 }
 
 .header__logo {

@@ -5,30 +5,16 @@ import {observer} from 'mobx-react-lite'
 import store from '../../store/store'
 
 const Filter = observer(() =>{
-  const [types, setTypes] = React.useState([])
-
-
-  function handleChange(e){
-    const item = e.target.value
-    const isChecked = e.target.checked;
-    let newArr = [];
-
-    if(isChecked){
-      newArr = [...types, item]
-      setTypes(newArr)
-    }
-    if(!isChecked){
-      newArr = types.filter((el)=> el !== item);
-     setTypes(newArr)
-    }
-    store.setCheckedTypes(newArr)
-    // store.fetchPokemonsByFilter(newArr)
-    store.fetchPokemons()
-  }
+  const [type, setType] = React.useState('')
 
   React.useEffect(()=>{
-    store.fetchPokemonsTypes()
-  },[])
+    let mounted = true;
+    if(mounted){
+    store.changeCurrentPage(1)
+    store.filterPokemons(type)
+    }
+    return () => mounted = false
+  }, [type])
 
   return(
     <div className='filter'>
@@ -36,7 +22,7 @@ const Filter = observer(() =>{
         {
           store.pokemonsTypes &&
           store.pokemonsTypes.map((item)=>{
-            return <FilterItem item={item} onChange={handleChange} key={item} />
+            return <FilterItem item={item} onChange={() => setType(item)} key={item} />
           })
         }
       </form>

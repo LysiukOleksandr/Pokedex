@@ -1,14 +1,14 @@
 import React from "react"
 import './PokemonDetails.css'
 import axios from 'axios'
-const PokemonDetails = ({ match }) =>{
+import PropTypes from 'prop-types'
 
+const PokemonDetails = ({ match }) =>{
   
   const [details, setDetails] = React.useState({})
 
-
   React.useEffect(()=>{
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${match.params.name}`)
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${match.params.id}`)
     .then(({data})=>{
      setDetails({
               id: data.id,
@@ -18,7 +18,7 @@ const PokemonDetails = ({ match }) =>{
               types: data.types,
             })
     })
-  },[match.params.name])
+  },[match.params.id])
   
 
   const colors = {
@@ -62,9 +62,14 @@ const PokemonDetails = ({ match }) =>{
       <p className="pokemon-details__height">Height: { details && details.height }</p>
     </div>
   )
+}
 
-
-
+PokemonDetails.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired
+    })
+  })
 }
 
 

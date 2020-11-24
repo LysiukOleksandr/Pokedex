@@ -8,9 +8,8 @@ const Header = observer(() =>{
 
   const filters = [10,20,50]
 
-  function onClickFilter(filter){
-    store.setLimitPageFilter(filter)
-    store.fetchPokemons();
+  function onClickFilter(val){
+    store.setLimitOnPage(val)
   }
 
   return(
@@ -20,10 +19,11 @@ const Header = observer(() =>{
       </Link>
      <SearchForm/>
         <ul className="header__filters">
+       
           {
-            filters.map((filter) =>{
-          return <li className="header__filters-item" key={filter} onClick={()=> onClickFilter(filter) }>
-              { filter }
+            filters.map((item) =>{
+          return <li className="header__filters-item" key={item} onClick={()=> onClickFilter(item) }>
+              { item }
           </li>
             })
           }

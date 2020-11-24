@@ -4,11 +4,9 @@ import { observer } from 'mobx-react-lite'
 import store from '../../../store/store'
 const SearchForm = observer(() =>{
 
-
-
-   function onChangeSearchValue(e){
-    store.setSearchValue(e.target.value)
-    store.fetchPokemons()
+  function onChangeSearchValue(e){
+    store.changeCurrentPage(1)
+    store.searchPokemons(e.target.value)
   }
 
 

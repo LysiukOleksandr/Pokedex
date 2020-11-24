@@ -2,12 +2,12 @@ import React from 'react'
 import './Pagination.css'
 import { observer } from 'mobx-react-lite'
 import store from '../../store/store'
-
+import classNames from 'classnames'
 const Pagination = observer(() =>{
 
-  const portionSize = store.limitOnPage;
+  const portionSize = 5;
   let pageLinks = [];
-  for(let i = 1; i <= (Math.ceil(store.countOfPokemons / store.limitOnPage)); i++){
+  for(let i = 1; i <= Math.ceil(store.countOfPokemons / store.limitOnPage); i++){
     pageLinks.push(i)
   }
 
@@ -15,14 +15,13 @@ const Pagination = observer(() =>{
   let portionCount = Math.ceil(store.countOfPokemons / portionSize);
   let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
   let rightPortionPageNumber = portionNumber * portionSize;
-
   const onPageChanged = (pageNumber) => {
-    store.changePage(pageNumber);
+    store.changeCurrentPage(pageNumber)
   };
 
   const prevPage = () =>{
     setPortionNumber(portionNumber - 1)
-    store.prevPage()  
+    store.prevPage()
   };
 
   const nextPage =() =>{
@@ -33,10 +32,11 @@ const Pagination = observer(() =>{
 
   return(
     <div className='pagination'>
-       {portionNumber > 1 && (
+       
+       {portionNumber > 1 && store.pokemons.length >= 1 && (
           <button
             className="pagination__btn pagination__btn-prev"
-            onClick={ prevPage}
+            onClick={prevPage}
           >
             prev
           </button>
@@ -50,15 +50,16 @@ const Pagination = observer(() =>{
             return (
               <li
                 key={p}
-                onClick={(e) => onPageChanged(p)}
-                className="pagination__item "
-              >
+                onClick={() => onPageChanged(p)}
+                className={classNames("pagination__item",{
+                  "pagination__item--selected": store.currentPage === p,
+                })}>
                 {p}
               </li>
             );
           })}
       </ul>
-      {portionCount > portionNumber && (
+      { (portionCount / 10) > portionNumber && store.pokemons.length >= 1 && (
           <button
             className="pagination__btn pagination__btn-next"
             onClick={nextPage}
@@ -66,8 +67,10 @@ const Pagination = observer(() =>{
             next
           </button>
         )}
+      
     </div>
   )
+      
 })
 
 

@@ -38,3 +38,7 @@
 .pagination__item:hover {
   background: coral;
 }
+
+.pagination__item--selected {
+  background: slateblue;
+}

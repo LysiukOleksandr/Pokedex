@@ -1,152 +1,149 @@
-import {makeAutoObservable, configure, action, runInAction} from 'mobx'
+import {makeAutoObservable, configure,runInAction} from 'mobx'
  import axios from 'axios'
 configure({enforceAction: 'observed'});
 
 class Pokemons{
 
-  pokemons = [];
-  pokemonsTypes = [];
-  checkedTypes = [];
-  filteredPokemons = [];
-  searchedPokemons = [];
-  currentPage = 1;
-  limitOnPage = 10;
-  countOfPokemons = 0;
-  fixedCountOfPokemons = 1050;
-  searchValue = '';
-  
+  pokemons = []; // pokemons which we should render
+  allPokemons = []; // all 1050 pokemons
+  pokemonsTypes = []; // pokemons types
+  searchedPokemons = []; // searched pokemons
+  filteredPokemons = []; // filtered pokemons
+  currentType = ''; // current type
+  currentPage = 1; // current page
+  limitOnPage = 10; // limit on one page (10/20/50)
+  countOfPokemons = 0; // all count of pokemons
+  searchValue = '' // search value
+
   constructor(){
     makeAutoObservable(this)
   }
 
-  
-  fetchPokemons(){
-      if(this.searchValue !== '' || this.searchPokemons.length > 0){
-        this.searchPokemons()
-      }
-    if(this.checkedTypes.length === 0){
-      this.fetchPokemonsBasic()
-    }
-     if(this.checkedTypes.length >=1){
-      this.fetchPokemonsByFilter()
-    }
-  }
-
-  
-
- fetchPokemonsBasic(){
-     axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${this.pokemons.length === 0 ? 0 : (this.limitOnPage * this.currentPage) - this.limitOnPage}&limit=${this.limitOnPage}`)
-     .then(action('fetchSuccess', response =>{
-    const data = response.data.results.map((item)=>{
-      return item.name
-    })
-    this.countOfPokemons = response.data.count;
-    this.pokemons = data;
-     }),
-     action('fetchError', error =>{
-       console.log(error)
-     })
-     )
-  }
-
-   fetchPokemonsByFilter(){
+  async fetchPokemons(){
     let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
-    let endLocalOffset = (this.limitOnPage * this.currentPage);
-    let pokemons = new Set()
-    this.checkedTypes.forEach ((item)=>{
-    axios.get(`https://pokeapi.co/api/v2/type/${item}`)
-      .then(action('filterSuccess', response =>{
-        response.data.pokemon.forEach((p)=>{
-          pokemons.add(p.pokemon.name)
-        })
-        this.filteredPokemons = Array.from(pokemons);
-        this.pokemons = this.filteredPokemons.slice(startLocalOffset, endLocalOffset)
-        this.countOfPokemons = this.filteredPokemons.length;
-      }),
-      action('filterError', error =>{
-        console.log(error)
-      }))
-    })
-  }
-
-  fetchPokemonsTypes(){
-    axios.get(`https://pokeapi.co/api/v2/type/`)
-    .then(action('typesSuccess', response =>{
-      const types = response.data.results.map((type) =>{
-        return type.name
-      })
-      this.pokemonsTypes = types
-    }),
-    action('typesError', error =>{
-      console.log(error)
-    })
-    )
-  }
-
-
-  async searchPokemons(){
-    
-    let startLocalOffset = (this.limitOnPage * this.currentPage) - this.limitOnPage;
-    let endLocalOffset = (this.limitOnPage * this.currentPage);
-    
-
-    if(this.searchedPokemons.length === 0 || this.searchValue[0] !== this.pokemons[0][0]){
-    this.currentPage = 1;
-    
-    try{
-      let res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=${this.fixedCountOfPokemons}`)
-    this.searchedPokemons= res.data.results.map((item)=>{
-       return item.name
-      })
+    let endLocalOffset = startLocalOffset + this.limitOnPage
+    // all pokemons we have in API
+    if(this.pokemons.length < 1){
+      try{
+       
+      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=1&offset=0`)
       runInAction(()=>{
-        this.pokemons = this.searchedPokemons.filter((item)=> item.startsWith(this.searchValue)).slice(startLocalOffset, endLocalOffset)
-
+        this.countOfPokemons = res.data.count;
       })
+    }
+   catch{
+     console.log('something went wrong f1')
+   }
+
+   try{
+   const poke = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${this.countOfPokemons}&offset=0`)
+   runInAction(()=>{
+     this.allPokemons = poke.data.results
+     this.pokemons = this.allPokemons.slice(0,this.limitOnPage);
+   }) 
+   }
+   catch{
+     console.log('something went wrong f2')
+   }
+  }
+  else if(this.searchValue !== ''){
+    this.searchPokemons(this.searchValue,startLocalOffset,endLocalOffset)
+  }
+  else if(this.filteredPokemons.length >= 1){
+    this.filterPokemons(this.currentType, startLocalOffset, endLocalOffset)
+  }
+  else{
+    this.pokemons = this.allPokemons.slice(startLocalOffset, endLocalOffset);
+  }
+
+  }
+  
+  // fetch all pokemon types from API
+
+  async fetchPokemonsTypes(){
+    try{
+    let res = await axios.get(`https://pokeapi.co/api/v2/type/`)
+    res = res.data.results.map((type) =>{
+      return type.name
+    })
+    runInAction(()=>{
+      this.pokemonsTypes = res;
+    })
+  }
+  catch{
+    console.log('something went wrong fpt')
+  }
+      }
+   setLimitOnPage(val){
+    runInAction(()=> this.limitOnPage = val);
+    this.fetchPokemons()
+   }
+
+// search pokemons by input value from SearchForm
+
+   searchPokemons(val,start=0,end=this.limitOnPage){
+     if(val.length >= 1){
+       try{
+    runInAction(()=>{
+      this.filteredPokemons = []
+      this.searchValue = val
+    })  
+    runInAction(()=>{
+      this.searchedPokemons = this.allPokemons.filter((item)=>{
+       return item.name.startsWith(this.searchValue)
+      })
+      this.countOfPokemons = this.searchedPokemons.length
+      this.pokemons = this.searchedPokemons.slice(start, end)
+    })
+
     }
     catch{
-      console.log('something went wrong')
+      console.log('something went wrong sp')
     }
-      
+   }
+   
   }
-    else if(this.searchedPokemons.length !== 0 ){
+
+ async filterPokemons(val,start=0,end=this.limitOnPage){
+    if(val.length){
       runInAction(()=>{
-        this.pokemons = this.searchedPokemons.filter((item)=> item.startsWith(this.searchValue)).slice(startLocalOffset, endLocalOffset)
-
+        this.searchedPokemons = []
+        this.searchValue = ''
+        this.currentType = val
       })
-      console.log(this.pokemons)
+      try{ 
+    let res = await axios.get(`https://pokeapi.co/api/v2/type/${val}`)
+    runInAction(()=>{
+      this.filteredPokemons = res.data.pokemon.map((item)=> item.pokemon)
+      this.pokemons = this.filteredPokemons.slice(start,end)
+      this.countOfPokemons = this.filteredPokemons.length
+    })
+    }
+    catch{
+      console.log('something went wrong fp')
     }
   }
-
-  setSearchValue(value){
-    this.searchValue = value
   }
 
-  setLimitPageFilter(value){
-    this.limitOnPage = value;
-  }
-
-
-  setCheckedTypes(value){
-    this.checkedTypes = value
-  }
-
-  changePage(page){
-    this.currentPage = page;
-    this.fetchPokemons()
-    
-  }
 
   nextPage(){
-    this.currentPage++;
+    runInAction(()=>{
+      this.currentPage = this.currentPage + 5
+    })
     this.fetchPokemons()
   }
 
   prevPage(){
-    this.currentPage--;
+    runInAction(()=>{
+      this.currentPage = this.currentPage - 5
+    })
     this.fetchPokemons()
   }
-  
 
+  changeCurrentPage(val){
+    runInAction(()=> this.currentPage = val)
+    this.fetchPokemons()
+  }
 
 }
 
